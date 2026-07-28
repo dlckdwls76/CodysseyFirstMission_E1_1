@@ -31,33 +31,33 @@
 
 | 항목 | 사용 환경 | 확인 명령 |
 | --- | --- | --- |
-| OS | `<직접 입력>` | `sw_vers` 또는 `cat /etc/os-release` |
-| CPU 아키텍처 | `<직접 입력>` | `uname -m` |
-| 터미널 | `<직접 입력>` | 사용하는 앱 이름 직접 기록 |
-| Shell | `<직접 입력>` | `echo $SHELL` |
-| Docker 실행 환경 | `<OrbStack 또는 기타 환경>` | 애플리케이션 및 `docker info` 확인 |
-| Docker | `<직접 입력>` | `docker --version` |
-| Docker Compose | `<직접 입력>` | `docker compose version` |
-| Git | `<직접 입력>` | `git --version` |
-| VS Code | `<직접 입력>` | `code --version` |
+| OS | `ProductName : <MacOs>`, `ProductVersion : <15.7.4>`, `BuildVersion : <24G517>` | `sw_vers`|
+| CPU 아키텍처 | `<x86_64>` | `uname -m` |
+| 터미널 | `<Finder>` | 사용하는 앱 이름 직접 기록 |
+| Shell | `</bin/zsh>` | `echo $SHELL` |
+| Docker 실행 환경 | `<OrbStack>` | 애플리케이션 및 `docker info` 확인 |
+| Docker | `<28.5.2>, <build ecc6942>` | `docker --version` |
+| Docker Compose | `<Docker Compose version v2.40.3>` | `docker compose version` |
+| Git | `<git version 2.53.0>` | `git --version` |
+| VS Code | `<x64>` | `code --version` |
 
 ### 환경 확인 로그
 
 ```bash
 $ sw_vers
-# 실제 출력 붙여넣기
+# ProductName : <MacOs>`, `ProductVersion : <15.7.4>`, `BuildVersion : <24G517>
 
 $ uname -m
-# 실제 출력 붙여넣기
+# x86_64
 
 $ echo $SHELL
-# 실제 출력 붙여넣기
+# bin/zsh
 
 $ docker --version
-# 실제 출력 붙여넣기
+# <28.5.2>, <build ecc6942>
 
 $ git --version
-# 실제 출력 붙여넣기
+# <git version 2.53.0>
 ```
 
 ## 3. 프로젝트 구조
