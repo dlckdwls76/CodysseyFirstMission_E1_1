@@ -37,7 +37,7 @@ dlckdwls763222@c3r5s3 ~ % echo $TERM_PROGRAM //어떤 터미널 프로그램을 
 Apple_Terminal //맥의 기본 터미널 앱 자체는 버전을 확인하는 명령어가 따로 없어서, 현재 어떤 터미널 프로그램을 쓰고있는지 확인하는 명령어
 dlckdwls763222@c3r5s3 ~ % docker -v //도커가 잘 설치 되어있는지, 버전은 몇인지 알려주는 명령어
 Docker version 29.4.0, build 9d7ad9f
-dlckdwls763222@c3r5s3 ~ % git --version //깃 버전 명령어 (맥에는 보통 기본으로 설칭가 되어있음)
+dlckdwls763222@c3r5s3 ~ % git --version //깃 버전 명령어 (맥에는 보통 기본으로 설치가 되어있음)
 git version 2.53.0
 ```
 
