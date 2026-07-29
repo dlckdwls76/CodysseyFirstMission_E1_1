@@ -11,6 +11,104 @@
 OrbStack은 Docker Descktop과 유사한 컨테이너 실행 환경을 제공하며, 별도의 'sudo' 권한 없이 Docker를 사용할 수 있도록 지원한다. OrbStack 실행 후 터미널에서는 기존과 동일하게 다음과 같은 Docker 명령어를 사용할 수 있다.
 
 ```bash
-docker run
-docker ps
+docker run 
+docker ps 
 docker build
+```
+---
+#2. 실행환경(실행 환경(OS/쉘/터미널, Docker 버전, Git 버전)
+ 항목 | 사용 환경 | 확인 명령 |
+| --- | --- | --- |
+| OS | `ProductName : <MacOs>`, `ProductVersion : <15.7.4>`, `BuildVersion : <24G517>` | `sw_vers`| 
+| Shell | `</bin/zsh>` | `echo $SHELL` | 
+| 터미널 | `<Apple_Terminal>` |`echo $TERM_PROGRAM`| 
+| Docker | `<29.4.0>, <build 9d8ad9f>` | `docker --version` |
+| Git | `<git version 2.53.0>` | `git --version` |
+
+### 환경 확인 로그
+```bash
+dlckdwls763222@c3r5s3 ~ % sw_vers // 맥OS버전 확인 명령어
+ProductName:		macOS 
+ProductVersion:		15.7.4
+BuildVersion:		24G517
+dlckdwls763222@c3r5s3 ~ % echo $SHELL // 쉘 종류 확인 명령어 (쉘은 우리가 입력한 명령어를 컴퓨터에게 번역해주는 역할)
+/bin/zsh //기본적으로 이렇게 나온다. (지쉛)
+dlckdwls763222@c3r5s3 ~ % echo $TERM_PROGRAM //어떤 터미널 프로그램을 쓰는지 확인하는 명령어
+Apple_Terminal //맥의 기본 터미널 앱 자체는 버전을 확인하는 명령어가 따로 없어서, 현재 어떤 터미널 프로그램을 쓰고있는지 확인하는 명령어
+dlckdwls763222@c3r5s3 ~ % docker -v //도커가 잘 설치 되어있는지, 버전은 몇인지 알려주는 명령어
+Docker version 29.4.0, build 9d7ad9f
+dlckdwls763222@c3r5s3 ~ % git --version //깃 버전 명령어 (맥에는 보통 기본으로 설칭가 되어있음)
+git version 2.53.0
+```
+
+
+
+# 3. 수행항목 체크리스트
+
+본 미션에서 달성해야 할 핵심 학습 항목과 현재 진행 상태입니다.
+
+| 상태 | 학습 항목 | 핵심 개념 | 달성 목표 |
+| :---: | :--- | :--- | :--- |
+| ✅ | **터미널 (Terminal)** | CLI(명령줄) 기반으로 컴퓨터와 소통하는 창구 | `cd`, `ls`, `mkdir` 등 기본 리눅스 명령어 숙지 |
+| ⬜️ | **권한 (Permission)** | 파일/폴더를 읽고(r), 쓰고(w), 실행(x)할 수 있는 권한 | `chmod`, `sudo`의 필요성 이해 및 권한 오류 해결 |
+| ✅ | **Git / GitHub** | 코드 버전 관리(Git) 및 원격 저장소(GitHub) | `commit`, `push`를 통한 코드 백업 및 협업 환경 구축 |
+| ✅ | **Docker (도커)** | 환경에 구애받지 않는 격리된 컨테이너 실행 환경 | 이미지와 컨테이너의 차이 이해, `docker run` 실행 |
+| ⬜️ | **포트 (Port)** | 호스트(내 PC)와 컨테이너를 연결하는 통신 출입구 | 포트 포워딩(`-p`)을 통해 웹 브라우저로 컨테이너 접속 |
+| ⬜️ | **마운트 (Bind Mount)**| 내 PC의 폴더를 컨테이너 내부와 실시간으로 연결 | 로컬에서 수정한 코드를 컨테이너 재시작 없이 즉시 반영 |
+| ⬜️ | **볼륨 (Volume)** | 도커가 직접 관리하는 안전한 데이터 저장 공간 | 컨테이너가 삭제되어도 DB 등의 데이터가 영구 보존되도록 설정 |
+| ⬜️ | **Dockerfile** | 나만의 도커 이미지를 만들기 위한 설정(레시피) 파일 | `docker build`를 통해 내 코드가 담긴 커스텀 이미지 생성 |
+
+> **💡 진행 상태 표시**
+> - ✅ : 완료 (환경 설정 및 개념 이해 완료)
+> - ⬜️ : 진행 예정 (앞으로 학습 및 실습할 내용)
+
+
+#2. 최종 결과물
+1. 제출 저장소(GitHub Repository)
+2. 기술 문서 (README.md 등)
+- 프로젝트 개요 (미션 목표 요약)
+- 수행 항목 체크리스트 (터미널/권한/Docker/Dockerfile/포트/볼륨/Git/GitHub)
+- 검증 방법 (어떤 명령으로 무엇을 확인 했는지) + 결과 위치 링크
+- 트러블슈팅 2건 이상 (문제 -> 원인 가설 -> 확인 -> 해결/대안)
+- 기술 문서만 읽어도 전체 수행 내용 파악 가능하도록 해야함
+3. 터미널 조작 로그
+터미널에서 수행한 핵심 명령과 출력 결과를 기술 문서에 기록한다.
+
+4. Docker 운영/검증 로그
+docker --version, docker info 등 설치·점검 결과
+docker images, docker ps -a, docker logs, docker stats 등 운영 명령 실행 흔적
+
+5. Dockerfile 기반 웹 서버 컨테이너
+웹 서버 소스코드(예: app/ 또는 src/)
+Dockerfile
+빌드/실행 명령 및 결과 로그(터미널 스크린샷 가능)
+포트 매핑 접속 성공 증거(스크린샷 또는 로그)
+
+6. 포트 매핑 접속 증거
+p <host_port>:<container_port>로 실행 후, 브라우저 접속 화면(주소창 포함)을 기술 문서에 첨부한다.
+
+7. 바인드 마운트 반영 + 볼륨 영속성 증거
+바인드 마운트: 실행 명령 + 호스트 변경 전/후 비교
+Docker 볼륨: 생성/연결/검증 명령 + 컨테이너 삭제 전/후 비교
+
+8. Git 설정 및 GitHub/VSCode 연동 증거
+Git 사용자 정보·기본 브랜치 설정 후, VSCode에서 GitHub 로그인 및 저장소 연동 완료
+민감한 개인 정보(ID/PW, 토큰 등)가 포함되지 않도록 주의한다.
+
+---
+#3. 과제 목표
+이 과제를 마친 후, 학습자는 아래를 스스로 설명할 수 있어야 한다.
+1. 절대 경로와 상대 경로의 차이를 예시를 들어 설명할 수 있다.
+2. 파일 권한의 의미(r/w/x)와 755, 644 같은 표기가 어떤 규칙으로 해석되는지 설명할 수 있다.
+3. 기존 Dockerfile을 기반으로 “커스텀 이미지”를 만들 수 있다.
+4. 포트 매핑이 필요한 이유를 설명할 수 있다.
+5. Docker 볼륨(영속 데이터)을 설명할 수 있다.
+6. Git과 GitHub의 역할 차이(로컬 버전관리 vs 원격 협업 플랫폼)를 설명할 수 있다.
+7. 
+---
+4. 기능 요구 사항
+- GitHub Repository링크로 제출
+- 기술 문서 (README.md 등)는 아래 내용을 반드시 포함
+  - 모든 수행 결과는 "기술 문서 (README.md 등)"에서 확인 가능해야한다.
+  - 프로젝트 개요
+  - 
