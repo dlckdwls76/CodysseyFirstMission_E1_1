@@ -378,7 +378,7 @@ my-web
 | --- | --- | --- |
 | **hello-world 실행** | `Hello from Docker!` 메시지 출력 확인 (정상 실행 후 자동 종료됨) | `docker run hello-world` |
 | **Ubuntu 실행 및 진입** | 프롬프트가 `root@<컨테이너ID>:/#` 형태로 변경되며 컨테이너 내부로 진입 성공 | `docker run -it ubuntu bash` |
-| **내부 파일 목록 확인** | `<여기에 ls 쳤을 때 나온 결과(예: bin boot dev 등)를 간단히 적어주세요>` | `ls` |
+| **내부 파일 목록 확인** | `<bin, boot, dev, etc, home, lib, usr, var 등의 디렉토리 확인>` | `ls` |
 | **내부 텍스트 출력** | `Hello Ubuntu!` 출력 확인 | `echo "Hello Ubuntu!"` |
 | **컨테이너 빠져나오기** | 컨테이너가 종료되며 다시 Mac 터미널로 복귀함 | `exit` |
 
@@ -530,7 +530,7 @@ B 컴퓨터에서 확인하기: 완전히 새로운 container-B를 만들고 아
 ### 9-2. 검증 절차 및 결과
 
 **1) 볼륨 생성**
-* **명령어:** `docker volume create my-data`
+* **명령어:** `docker volume create mt-data`
 * **출력:** `my-data`
 
 **2) 첫 번째 컨테이너 생성 및 데이터 쓰기**
