@@ -559,8 +559,20 @@ B 컴퓨터에서 확인하기: 완전히 새로운 container-B를 만들고 아
 ```bash
 dlckdwls763222@c4r8s5 docker-study % docker volume create mt-data
 mt-data
-
-
+dlckdwls763222@c4r8s5 docker-study % docker run -it --name container-A -v my-data:/workspace ubuntu
+root@a5919ebb113e:/# 
+root@a5919ebb113e:/# echo "This data will survive!" > /workspace/test.txt
+root@a5919ebb113e:/# cat /workspace/test.txt
+This data will survive!
+root@a5919ebb113e:/# exit
+exit
+dlckdwls763222@c4r8s5 docker-study % docker rm container-A
+container-A
+dlckdwls763222@c4r8s5 docker-study % docker run -it --name container-B -v my-data:/workspace ubuntu
+root@28b4ba610f1e:/# cat /workspace/test.txt
+This data will survive!
+root@28b4ba610f1e:/# exit
+exit
 ```
 ---
 # 3. 수행항목 체크리스트
@@ -570,13 +582,13 @@ mt-data
 | 상태 | 학습 항목 | 핵심 개념 | 달성 목표 |
 | :---: | :--- | :--- | :--- |
 | ✅ | **터미널 (Terminal)** | CLI(명령줄) 기반으로 컴퓨터와 소통하는 창구 | `cd`, `ls`, `mkdir` 등 기본 리눅스 명령어 숙지 |
-| ⬜️ | **권한 (Permission)** | 파일/폴더를 읽고(r), 쓰고(w), 실행(x)할 수 있는 권한 | `chmod`, `sudo`의 필요성 이해 및 권한 오류 해결 |
+| ✅  | **권한 (Permission)** | 파일/폴더를 읽고(r), 쓰고(w), 실행(x)할 수 있는 권한 | `chmod`, `sudo`의 필요성 이해 및 권한 오류 해결 |
 | ✅ | **Git / GitHub** | 코드 버전 관리(Git) 및 원격 저장소(GitHub) | `commit`, `push`를 통한 코드 백업 및 협업 환경 구축 |
 | ✅ | **Docker (도커)** | 환경에 구애받지 않는 격리된 컨테이너 실행 환경 | 이미지와 컨테이너의 차이 이해, `docker run` 실행 |
-| ⬜️ | **포트 (Port)** | 호스트(내 PC)와 컨테이너를 연결하는 통신 출입구 | 포트 포워딩(`-p`)을 통해 웹 브라우저로 컨테이너 접속 |
-| ⬜️ | **마운트 (Bind Mount)**| 내 PC의 폴더를 컨테이너 내부와 실시간으로 연결 | 로컬에서 수정한 코드를 컨테이너 재시작 없이 즉시 반영 |
-| ⬜️ | **볼륨 (Volume)** | 도커가 직접 관리하는 안전한 데이터 저장 공간 | 컨테이너가 삭제되어도 DB 등의 데이터가 영구 보존되도록 설정 |
-| ⬜️ | **Dockerfile** | 나만의 도커 이미지를 만들기 위한 설정(레시피) 파일 | `docker build`를 통해 내 코드가 담긴 커스텀 이미지 생성 |
+| ✅ | **포트 (Port)** | 호스트(내 PC)와 컨테이너를 연결하는 통신 출입구 | 포트 포워딩(`-p`)을 통해 웹 브라우저로 컨테이너 접속 |
+| ✅  | **마운트 (Bind Mount)**| 내 PC의 폴더를 컨테이너 내부와 실시간으로 연결 | 로컬에서 수정한 코드를 컨테이너 재시작 없이 즉시 반영 |
+| ✅  | **볼륨 (Volume)** | 도커가 직접 관리하는 안전한 데이터 저장 공간 | 컨테이너가 삭제되어도 DB 등의 데이터가 영구 보존되도록 설정 |
+| ✅  | **Dockerfile** | 나만의 도커 이미지를 만들기 위한 설정(레시피) 파일 | `docker build`를 통해 내 코드가 담긴 커스텀 이미지 생성 |
 
 > **💡 진행 상태 표시**
 > - ✅ : 완료 (환경 설정 및 개념 이해 완료)
