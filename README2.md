@@ -16,7 +16,7 @@ docker ps
 docker build
 ```
 ---
-#2. 실행환경(실행 환경(OS/쉘/터미널, Docker 버전, Git 버전)
+# 2. 실행환경(실행 환경(OS/쉘/터미널, Docker 버전, Git 버전)
  항목 | 사용 환경 | 확인 명령 |
 | --- | --- | --- |
 | OS | `ProductName : <MacOs>`, `ProductVersion : <15.7.4>`, `BuildVersion : <24G517>` | `sw_vers`| 
