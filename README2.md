@@ -16,13 +16,13 @@ docker ps
 docker build
 ```
 ---
-# 2. 실행환경(실행 환경(OS/쉘/터미널, Docker 버전, Git 버전)
+# 2. 실행환경(OS/쉘/터미널, Docker 버전, Git 버전)
  항목 | 사용 환경 | 확인 명령 |
 | --- | --- | --- |
 | OS | `ProductName : <MacOs>`, `ProductVersion : <15.7.4>`, `BuildVersion : <24G517>` | `sw_vers`| 
 | Shell | `</bin/zsh>` | `echo $SHELL` | 
-| 터미널 | `<Apple_Terminal>` |`echo $TERM_PROGRAM`| 
-| Docker | `<29.4.0>, <build 9d8ad9f>` | `docker --version` |
+| 터미널 | `<vscode>` |`echo $TERM_PROGRAM`| 
+| Docker | `<29.4.0>, <build 9d7ad9f>` | `docker --version` |
 | Git | `<git version 2.53.0>` | `git --version` |
 
 ### 환경 확인 로그
@@ -34,15 +34,159 @@ BuildVersion:		24G517
 dlckdwls763222@c3r5s3 ~ % echo $SHELL // 쉘 종류 확인 명령어 (쉘은 우리가 입력한 명령어를 컴퓨터에게 번역해주는 역할)
 /bin/zsh //기본적으로 이렇게 나온다. (지쉛)
 dlckdwls763222@c3r5s3 ~ % echo $TERM_PROGRAM //어떤 터미널 프로그램을 쓰는지 확인하는 명령어
-Apple_Terminal //맥의 기본 터미널 앱 자체는 버전을 확인하는 명령어가 따로 없어서, 현재 어떤 터미널 프로그램을 쓰고있는지 확인하는 명령어
+vscode //맥의 기본 터미널 앱 자체는 버전을 확인하는 명령어가 따로 없어서, 현재 어떤 터미널 프로그램을 쓰고있는지 확인하는 명령어
 dlckdwls763222@c3r5s3 ~ % docker -v //도커가 잘 설치 되어있는지, 버전은 몇인지 알려주는 명령어
 Docker version 29.4.0, build 9d7ad9f
 dlckdwls763222@c3r5s3 ~ % git --version //깃 버전 명령어 (맥에는 보통 기본으로 설치가 되어있음)
 git version 2.53.0
 ```
+---
+# 3. 도커 연습용 폴더 만들기
+| 진행 단계 | 실행 결과 및 설명 | 명령어 |
+| --- | --- | --- |
+| **현재 위치 확인** | `/Users/dlckdwls76` (현재 작업 중인 경로 출력) | `pwd` |
+| **연습용 폴더 생성** | (화면 출력 없음) `docker-study` 폴더 생성 | `mkdir docker-study` |
+| **폴더로 이동** | `docker-study` 폴더 내부로 진입 | `cd docker-study` |
+| **이동 확인** | 경로 끝에 `/docker-study`가 붙었는지 확인 | `pwd` |
+
+### 환경 확인 로그
+```bash
+dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % pwd 
+/Users/dlckdwls763222/CodysseyFirstMission_E1_1
+dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % mkdir docker-study
+dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % cd coker-study
+cd: no such file or directory: coker-study
+dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % pwd
+/Users/dlckdwls763222/CodysseyFirstMission_E1_1
+dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % cd docker-study
+dlckdwls763222@c3r5s3 docker-study % pwd
+/Users/dlckdwls763222/CodysseyFirstMission_E1_1/docker-study
+```
+
+절대 경로 (Absolute Path)
+
+개념: 변하지 않는 **'전체 도로명 주소'**입니다. (예: 서울특별시 강남구 테헤란로 123)
+특징: 내가 지금 어디에 있든, 이 주소를 입력하면 무조건 그곳으로 갑니다. 맥(Mac)에서는 항상 최상위 뿌리인 / 부터 시작합니다.
+예시: /Users/dlckdwls763222/CodysseyFirstMission_E1_1/docker-study
+
+상대 경로 (Relative Path)
+
+개념: **'지금 내가 있는 위치'**를 기준으로 말하는 주소입니다. (예: "지금 있는 곳에서 뒤로 한 칸 가", "내 바로 앞에 있는 폴더로 들어가")
+특징: 터미널에서 가장 많이 쓰는 방식입니다.
+핵심 기호:
+. (점 한 개) : 현재 내가 있는 폴더
+.. (점 두 개) : 현재 위치에서 한 칸 뒤(상위) 폴더
+
+# 1. 현재 내 전체 주소 확인 (이것이 '절대 경로'입니다)
+pwd
+
+# 2. 현재 폴더 안의 모든 내용 보기 (숨김 파일 포함)
+# 목록 맨 위에 `.` 과 `..` 이 있는 것을 확인해 보세요!
+ls -al
+
+# 3. 한 칸 뒤(부모 폴더)로 이동 (이것이 '상대 경로'를 쓴 것입니다)
+cd ..
+
+---
+# 4. 파일 및 폴더 권한 (Permission) 이해하기
+1. 세 가지 권한 (r, w, x)
+
+r (Read, 4점): 읽기 권한 (파일 내용 보기)
+w (Write, 2점): 쓰기 권한 (파일 수정, 삭제)
+x (Execute, 1점): 실행 권한 (프로그램 실행, 폴더 들어가기)
+- (0점): 권한 없음
+
+2. 세 종류의 사람
+권한은 항상 3자리 숫자로 줍니다. (예: 755)
+
+첫 번째 숫자: 나 (소유자)
+두 번째 숫자: 우리 팀 (그룹)
+세 번째 숫자: 남 (기타 사용자)
+3. 숫자 계산법 (더하기만 하면 됩니다!)
+
+7 = 4(r) + 2(w) + 1(x)  읽고, 쓰고, 실행 다 해! (모든 권한)
+6 = 4(r) + 2(w) + 0  읽고, 쓰기만 해! (수정은 되지만 실행은 안 됨)
+5 = 4(r) + 0 + 1(x)  읽고, 실행만 해! (수정은 안 됨)
+4 = 4(r) + 0 + 0  읽기만 해!
+
+755: 나(7)는 다 할 수 있고, 남들(5)은 읽고 실행만 가능. (주로 폴더나 실행 파일에 씀)
+644: 나(6)는 읽고 수정할 수 있고, 남들(4)은 읽기만 가능. (주로 텍스트 문서 같은 일반 파일에 씀)
+### 환경 확인 로그
+```bash
+dlckdwls763222@c3r5s3 docker-study % touch test.txt
+dlckdwls763222@c3r5s3 docker-study % ls -l test.txt
+-rw-r--r--  1 dlckdwls763222  dlckdwls763222  0 Jul 29 17:06 test.txt
+dlckdwls763222@c3r5s3 docker-study % chmod 755 test.txt
+dlckdwls763222@c3r5s3 docker-study % ls -l test.txt
+-rwxr-xr-x  1 dlckdwls763222  dlckdwls763222  0 Jul 29 17:06 test.txt
+dlckdwls763222@c3r5s3 docker-study % chmod644 test.txt
+zsh: command not found: chmod644
+dlckdwls763222@c3r5s3 docker-study % chmod 644 test.txt
+dlckdwls763222@c3r5s3 docker-study % ls -l text.txt
+ls: text.txt: No such file or directory
+dlckdwls763222@c3r5s3 docker-study % ls -l test.txt
+-rw-r--r--  1 dlckdwls763222  dlckdwls763222  0 Jul 29 17:06 test.txt
 
 
+```
+---
 
+# 5. 도커 핵심 개념 및 컨테이너 실행하기
+1. 도커의 핵심 개념 (이미지와 컨테이너)
+이미지 (Image)
+프로그램을 실행하는 데 필요한 모든 것(OS, 설정, 코드)이 담겨 있는 변하지 않는 원본 파일이다.
+컨테이너 (Container) 
+이미지를 바탕으로 실제로 메모리에 올라가 실행된 상태를 말한다. 하나의 이미지로 여러 개의 컨테이너를 독립적으로 실행할 수 있다.
+포트 매핑 (Port Mapping) = "-p 8080:80"
+내 컴퓨터(Mac)의 특정 포트(예: 8080)로 들어오는 접속을, 도커 컨테이너 내부의 포트(예: 80)로 연결해 주는 작업이다.
+
+2. 도커 기본 명령어 실습
+진행 단계	실행 결과 및 설명	명령어
+Hello World 실행	도커가 정상 작동하는지 확인하는 테스트용 컨테이너 실행	docker run hello-world
+전체 컨테이너 조회	실행 중이거나 종료된 모든 컨테이너의 목록(ID, 상태 등) 확인	docker ps -a
+웹 서버(Nginx) 실행	백그라운드(-d)에서 8080포트를 열고 my-web이라는 이름으로 Nginx 실행	docker run -d -p 8080:80 --name my-web nginx
+실행 중인 컨테이너 조회	현재 살아서 돌아가고 있는 컨테이너만 확인	docker ps
+컨테이너 삭제	실습이 끝난 컨테이너를 강제(-f)로 삭제	docker rm -f my-web
+
+| 진행 단계 | 실행 결과 및 설명 | 명령어 |
+| --- | --- | --- |
+| **컨테이너 실행** | `hello-world` 이미지를 다운로드하고 컨테이너를 실행하여 환영 메시지 출력 | `docker run hello-world` |
+| **모든 컨테이너 조회** | 실행 중이거나 종료된 모든 컨테이너의 목록(ID, 이미지, 상태, 이름 등)을 확인 | `docker ps -a` |
+| **웹 서버(Nginx) 실행** | 백그라운드(`-d`)에서 8080포트를 열고 `my-web`이라는 이름으로 Nginx 실행 | `docker run -d -p 8080:80 --name my-web nginx` |
+| **실행 중인 컨테이너 조회** | 현재 살아서 돌아가고 있는 컨테이너만 확인 | `docker ps` |
+| **컨테이너 로그 확인** | 컨테이너 내부에서 발생한 기록(접속 내역, 에러 등)을 확인 | `docker logs my-web` |
+| **컨테이너 중지** | 실행 중인 컨테이너를 안전하게 종료 (삭제되는 것은 아님) | `docker stop my-web` |
+| **컨테이너 삭제** | 실습이 끝난 컨테이너를 강제(`-f`)로 삭제 | `docker rm -f my-web` |
+### 환경 확인 로그
+```bash
+dlckdwls763222@c3r5s3 docker-study % docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+```
+
+
+ 
 # 3. 수행항목 체크리스트
 
 본 미션에서 달성해야 할 핵심 학습 항목과 현재 진행 상태입니다.
