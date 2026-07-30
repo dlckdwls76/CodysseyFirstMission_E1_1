@@ -1,13 +1,9 @@
 # 개발 워크스테이션 구축
 ---
 # 1. 미션 소개 (요약)
- 이 미션은 개발을 시작하기 전에 기본환경인 리눅스 CLI환경,Docker, Git/GitHub를 직접 세팅하고 활용해 보는 것을 목표한다.
-
+ 이 미션은 개발을 시작하기 전에 기본환경인 리눅스 CLI환경,Docker, Git/GitHub를 직접 세팅하고 활용해 보는 것을 목표
  터미널을 통해 작업 디렉토리와 권한을 관리하고, Docker를 이용해 컨테이너를 실행 및 관리한다.
-
 이 과정에서 이미지와 컨테이너의 차이, 격리된 실행환경, 포트 및 스토리지 연결 방식 등 Docker의 핵심 개념을 이해한다. 최종적으로는 "내 컴퓨터에서만 실행되는 환경"이 아니라, 팀원 누구나 같은 방식으로 실행할 수 있는 개발 환경을 만드는 것을 경험한다.
-
-
 ---
 # 2. 실행환경(OS/쉘/터미널, Docker 버전, Git 버전)
  항목 | 사용 환경 | 확인 명령 |
@@ -21,116 +17,25 @@
 
 ### 환경 확인 로그
 ```bash
-dlckdwls763222@c3r5s3 ~ % sw_vers // 맥OS버전 확인 명령어
-ProductName:		macOS 
-ProductVersion:		15.7.4
-BuildVersion:		24G517
-dlckdwls763222@c3r5s3 ~ % echo $SHELL // 쉘 종류 확인 명령어 (쉘은 우리가 입력한 명령어를 컴퓨터에게 번역해주는 역할)
-/bin/zsh  (지쉘)
-dlckdwls763222@c3r5s3 ~ % echo $TERM_PROGRAM //어떤 터미널 프로그램을 쓰는지 확인하는 명령어
-vscode //맥의 기본 터미널 앱 자체는 버전을 확인하는 명령어가 따로 없어서, 현재 어떤 터미널 프로그램을 쓰고있는지 확인하는 명령어
-dlckdwls763222@c3r5s3 ~ % docker -v //도커가 잘 설치 되어있는지, 버전은 몇인지 알려주는 명령어
-Docker version 29.4.0, build 9d7ad9f
-dlckdwls763222@c3r5s3 ~ % git --version //깃 버전 명령어 (맥에는 보통 기본으로 설치가 되어있음)
+ProductName:            macOS
+ProductVersion:         15.7.4
+BuildVersion:           24G517
+
+$ echo $SHELL
+/bin/zsh
+
+$ echo $TERM_PROGRAM
+vscode
+
+$ docker --version
+Docker version 28.5.2, build ecc6942
+
+$ docker info
+
+$ git --version
 git version 2.53.0
-dlckdwls763222@c4r8s5 docker-study % docker info
-Client:
- Version:    28.5.2
- Context:    orbstack
- Debug Mode: false
- Plugins:
-  buildx: Docker Buildx (Docker Inc.)
-    Version:  v0.29.1
-    Path:     /Users/dlckdwls763222/.docker/cli-plugins/docker-buildx
-  compose: Docker Compose (Docker Inc.)
-    Version:  v2.40.3
-    Path:     /Users/dlckdwls763222/.docker/cli-plugins/docker-compose
 
-Server:
- Containers: 0
-  Running: 0
-  Paused: 0
-  Stopped: 0
- Images: 0
- Server Version: 28.5.2
- Storage Driver: overlay2
-  Backing Filesystem: btrfs
-  Supports d_type: true
-  Using metacopy: false
-  Native Overlay Diff: true
-  userxattr: false
- Logging Driver: json-file
- Cgroup Driver: cgroupfs
- Cgroup Version: 2
- Plugins:
-  Volume: local
-  Network: bridge host ipvlan macvlan null overlay
-  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
- CDI spec directories:
-  /etc/cdi
-  /var/run/cdi
- Swarm: inactive
- Runtimes: io.containerd.runc.v2 runc
- Default Runtime: runc
- Init Binary: docker-init
- containerd version: 1c4457e00facac03ce1d75f7b6777a7a851e5c41
- runc version: d842d7719497cc3b774fd71620278ac9e17710e0
- init version: de40ad0
- Security Options:
-  seccomp
-   Profile: builtin
-  cgroupns
- Kernel Version: 6.17.8-orbstack-00308-g8f9c941121b1
- Operating System: OrbStack
- OSType: linux
- Architecture: x86_64
- CPUs: 6
- Total Memory: 15.67GiB
- Name: orbstack
- ID: 5bff73c5-9fc3-4ef4-9229-4e36f0256673
- Docker Root Dir: /var/lib/docker
- Debug Mode: false
- Experimental: false
- Insecure Registries:
-  ::1/128
-  127.0.0.0/8
- Live Restore Enabled: false
- Product License: Community Engine
- Default Address Pools:
-   Base: 192.168.97.0/24, Size: 24
-   Base: 192.168.107.0/24, Size: 24
-   Base: 192.168.117.0/24, Size: 24
-   Base: 192.168.147.0/24, Size: 24
-   Base: 192.168.148.0/24, Size: 24
-   Base: 192.168.155.0/24, Size: 24
-   Base: 192.168.156.0/24, Size: 24
-   Base: 192.168.158.0/24, Size: 24
-   Base: 192.168.163.0/24, Size: 24
-   Base: 192.168.164.0/24, Size: 24
-   Base: 192.168.165.0/24, Size: 24
-   Base: 192.168.166.0/24, Size: 24
-   Base: 192.168.167.0/24, Size: 24
-   Base: 192.168.171.0/24, Size: 24
-   Base: 192.168.172.0/24, Size: 24
-   Base: 192.168.181.0/24, Size: 24
-   Base: 192.168.183.0/24, Size: 24
-   Base: 192.168.186.0/24, Size: 24
-   Base: 192.168.207.0/24, Size: 24
-   Base: 192.168.214.0/24, Size: 24
-   Base: 192.168.215.0/24, Size: 24
-   Base: 192.168.216.0/24, Size: 24
-   Base: 192.168.223.0/24, Size: 24
-   Base: 192.168.227.0/24, Size: 24
-   Base: 192.168.228.0/24, Size: 24
-   Base: 192.168.229.0/24, Size: 24
-   Base: 192.168.237.0/24, Size: 24
-   Base: 192.168.239.0/24, Size: 24
-   Base: 192.168.242.0/24, Size: 24
-   Base: 192.168.247.0/24, Size: 24
-   Base: fd07:b51a:cc66:d000::/56, Size: 64
-
-WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set
-
+![실행 환경 확인 로그](./images/실행 환경 확인 로그.png)
 ```
 ---
 # 3. 도커 연습용 폴더 만들기 & 터미널 기본 명령어 및 파일 조작 실습
