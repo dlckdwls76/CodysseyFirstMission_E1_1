@@ -154,27 +154,361 @@ drwx------   2 dlckdwls763222  dlckdwls763222     64  7 30 18:30 perm_dir
 
 ---
 
-# 5. Docker운영/검증
-1. 도커의 핵심 개념 (이미지와 컨테이너)
+# 5. Docker 설치 및 기본 운영 명령 실습
+5-1. 도커의 핵심 개념 (이미지와 컨테이너)
 이미지 (Image)
-프로그램을 실행하는 데 필요한 모든 것(OS, 설정, 코드)이 담겨 있는 변하지 않는 원본 파일이다.
+프로그램을 실행하는 데 필요한 모든 것(OS, 설정, 코드)이 담겨 있는 변하지 않는 원본 파일
 
 컨테이너 (Container) 
-이미지를 바탕으로 실제로 메모리에 올라가 실행된 상태를 말한다. 하나의 이미지로 여러 개의 컨테이너를 독립적으로 실행할 수 있다.
+이미지를 바탕으로 실제로 메모리에 올라가 실행된 상태를 말한다. 하나의 이미지로 여러 개의 컨테이너를 독립적으로 실행할 수 있음
 
 포트 매핑 (Port Mapping) = "-p 8080:80"
-내 컴퓨터(Mac)의 특정 포트(예: 8080)로 들어오는 접속을, 도커 컨테이너 내부의 포트(예: 80)로 연결해 주는 작업이다.
+내 컴퓨터(Mac)의 특정 포트(예: 8080)로 들어오는 접속을, 도커 컨테이너 내부의 포트(예: 80)로 연결해주는 작업
 
-2. 도커 기본 명령어 실습
+5-2. Docker 설치 및 기본 점검
 | 진행 단계 | 실행 결과 및 설명 | 명령어 |
 | --- | --- | --- |
-| **컨테이너 실행** | `hello-world` 이미지를 다운로드하고 컨테이너를 실행하여 환영 메시지 출력 | `docker run hello-world` |
-| **모든 컨테이너 조회** | 실행 중이거나 종료된 모든 컨테이너의 목록(ID, 이미지, 상태, 이름 등)을 확인 | `docker ps -a` |
-| **웹 서버(Nginx) 실행** | 백그라운드(`-d`)에서 8080포트를 열고 `my-web`이라는 이름으로 Nginx 실행 | `docker run -d -p 8080:80 --name my-web nginx` |
-| **실행 중인 컨테이너 조회** | 현재 살아서 돌아가고 있는 컨테이너만 확인 | `docker ps` |
-| **컨테이너 로그 확인** | 컨테이너 내부에서 발생한 기록(접속 내역, 에러 등)을 확인 | `docker logs my-web` |
-| **컨테이너 중지** | 실행 중인 컨테이너를 안전하게 종료 (삭제되는 것은 아님) | `docker stop my-web` |
-| **컨테이너 삭제** | 실습이 끝난 컨테이너를 강제(`-f`)로 삭제 | `docker rm -f my-web` |
+| **Docker 버전 확인** | 설치된 Docker 버전과 빌드 정보 확인 | `docker --version` |
+| **Docker 데몬 확인** | Docker 클라이언트, 서버, 이미지 및 컨테이너 상태 확인 | `docker info` |
+| **이미지 다운로드** | Docker Hub에서 Nginx Alpine 이미지 다운로드 | `docker pull nginx:alpine` |
+| **이미지 목록 확인** | 내려받은 이미지의 이름, 태그, ID 및 크기 확인 | `docker images` |
+| **컨테이너 실행** | Nginx 컨테이너를 백그라운드로 실행하고 `8080:80` 포트 연결 | `docker run -d --name docker-ops-test -p 8080:80 nginx:alpine` |
+| **실행 목록 확인** | 현재 실행 중인 컨테이너 확인 | `docker ps` |
+| **웹 서버 확인** | 호스트의 8080 포트를 통해 Nginx 응답 확인 | `curl http://localhost:8080` |
+| **로그 확인** | 컨테이너에 기록된 HTTP 요청 로그 확인 | `docker logs docker-ops-test` |
+| **리소스 확인** | CPU, 메모리, 네트워크 및 디스크 사용량 확인 | `docker stats --no-stream docker-ops-test` |
+| **컨테이너 중지** | 실행 중인 컨테이너 중지 | `docker stop docker-ops-test` |
+| **전체 목록 확인** | 종료된 컨테이너를 포함한 전체 목록 확인 | `docker ps -a` |
+
+docker.io/library/nginx:alpine
+각 부분의 의미는:
+docker.io: Docker Hub
+library/nginx: Docker 공식 Nginx 이미지
+alpine: Alpine Linux 기반 버전
+
+Docker Hub → Docker 엔진 → Docker 전용 내부 저장공간
+
+Dockerfile 작성
+      ↓ docker build
+이미지 생성
+      ↓ docker run
+컨테이너 실행
+      ↓
+로그·상태·리소스 확인
+
+### 환경 확인 로그
+```bash
+$ % docker --version
+Docker version 28.5.2, build ecc6942
+$ % docker info
+
+```
+### 실행 증거
+[실행 환경 확인 로그 보기](./images/docker-version.png)
+
+[실행 환경 확인 로그 보기](./images/docker-info.png)
+
+---
+# 6.컨테이너 실행 실습 및 개념 정리
+
+### 6-1. 컨테이너 실행 및 내부 진입 실습
+| 진행 단계 | 실행 결과 및 설명 | 명령어 |
+| --- | --- | --- |
+| **hello-world 실행** | `Hello from Docker!` 메시지 출력 확인 (정상 실행 후 자동 종료됨) | `docker run hello-world` |
+| **Ubuntu 실행 및 진입** | 프롬프트가 `root@<컨테이너ID>:/#` 형태로 변경되며 컨테이너 내부로 진입 성공 | `docker run -it ubuntu bash` |
+| **내부 파일 목록 확인** | `<bin, boot, dev, etc, home, lib, usr, var 등의 디렉토리 확인>` | `ls` |
+| **내부 텍스트 출력** | `Hello Ubuntu!` 출력 확인 | `echo "Hello Ubuntu!"` |
+| **컨테이너 빠져나오기** | 컨테이너가 종료되며 다시 Mac 터미널로 복귀함 | `exit` |
+
+### 6-2. 컨테이너 종료와 유지 (attach vs exec) 차이점 정리
+* **`docker run -it` (또는 `attach`)**: 
+  컨테이너의 메인 프로세스에 직접 접속하는 방식이다. 작업 후 `exit` 명령어로 빠져나오면 메인 프로세스가 종료되므로 **컨테이너 자체도 함께 종료(Stop)** 된다.
+* **`docker exec -it`**: 
+  **이미 백그라운드에서 실행 중인 컨테이너**에 새로운 터미널을 열어 접속하는 방식이다. 작업 후 `exit`로 빠져나와도 내가 접속했던 터미널만 닫힐 뿐, **컨테이너는 종료되지 않고 계속 실행(유지)** 된다.
+
+### 환경 확인 로그
+```bash
+dlckdwls763222@c4r8s5 docker-study % docker run hello-world 
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+dlckdwls763222@c4r8s5 docker-study % docker run -it ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+Blatest: Pulling from library/ubuntu
+ed819469700f: Pull complete 
+a3679419df18: Pull complete 
+Digest: sha256:3131b4cc82a783df6c9df078f86e01819a13594b865c2cad47bd1bca2b7063bb
+Status: Downloaded newer image for ubuntu:latest
+root@ad52d768be9d:/# 
+root@ad52d768be9d:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@ad52d768be9d:/# echo "Hello Ubuntu!"
+Hello Ubuntu!
+root@ad52d768be9d:/# exit
+exit
+dlckdwls763222@c4r8s5 docker-study % 
+```
+---
+
+# 7. 기존 Dockerfile 기반 커스텀 이미지 제작
+
+기본 Nginx 웹 서버의 메인 화면을 나만의 정적 웹페이지로 교체하는 커스텀 이미지를 제작.
+
+### 7-1. 베이스 이미지 및 커스텀 포인트
+* **선택한 베이스 이미지:** `nginx:latest` (공식 Nginx 웹 서버 이미지)
+* **커스텀 포인트 및 목적:** 
+  * `COPY index.html /usr/share/nginx/html/index.html`
+  * **목적:** Nginx가 기본으로 제공하는 환영 페이지(Welcome to nginx!)를 제거하고, 내가 직접 작성한 커스텀 HTML 파일(`index.html`)로 덮어씌워 나만의 웹 서버 콘텐츠를 서비스하기 위함이다.
+
+### 7-2. 빌드 및 실행 실습 결과
+
+| 진행 단계 | 실행 결과 및 설명 | 명령어 |
+| --- | --- | --- |
+| **커스텀 HTML 생성** | `index.html` 파일 생성 및 내용 작성 | `echo "<h1>Hello! This is my custom Nginx server!</h1>" > index.html` |
+| **Dockerfile 생성** | 베이스 이미지(`FROM`)와 파일 복사(`COPY`) 명령어가 포함된 Dockerfile 작성 | `cat <<EOF > Dockerfile`<br>`FROM nginx:latest`<br>`COPY index.html /usr/share/nginx/html/index.html`<br>`EOF` |
+| **커스텀 이미지 빌드** | `my-custom-nginx`라는 이름의 새로운 이미지 생성 성공 | `docker build -t my-custom-nginx .` |
+| **컨테이너 실행** | 호스트의 8081 포트와 컨테이너의 80 포트를 연결하여 백그라운드 실행 | `docker run -d -p 8081:80 --name my-custom-web my-custom-nginx` |
+| **웹 브라우저 확인** | `http://localhost:8081` 접속 시 "Hello! This is my custom Nginx server!" 출력 확인 | (웹 브라우저에서 확인) |
+
+### 환경 확인 로그
+```bash
+dlckdwls763222@c4r8s5 docker-study % echo '<h1>Hello! This is my custom Nginx server!</h1>' > index.html
+dlckdwls763222@c4r8s5 docker-study % echo "FROM nginx:latest" > Dockerfile
+dlckdwls763222@c4r8s5 docker-study % cat Dockerfile
+FROM nginx:latest
+COPY index.html /usr/share/nginx/html/index.html
+dlckdwls763222@c4r8s5 docker-study % docker build -t my-custom-nginx .
+[+] Building 2.1s (7/7) FINISHED                                                                                                                            docker:orbstack
+ => [internal] load build definition from Dockerfile                                                                                                                   0.2s
+ => => transferring dockerfile: 104B                                                                                                                                   0.0s
+ => [internal] load metadata for docker.io/library/nginx:latest                                                                                                        0.0s
+ => [internal] load .dockerignore                                                                                                                                      0.2s
+ => => transferring context: 2B                                                                                                                                        0.0s
+ => [internal] load build context                                                                                                                                      0.3s
+ => => transferring context: 85B                                                                                                                                       0.0s
+ => [1/2] FROM docker.io/library/nginx:latest                                                                                                                          0.9s
+ => [2/2] COPY index.html /usr/share/nginx/html/index.html                                                                                                             0.2s
+ => exporting to image                                                                                                                                                 0.2s
+ => => exporting layers                                                                                                                                                0.1s
+ => => writing image sha256:7bf9ada4ed2cc5b4c1560fd3ccd09c244fed6a2182f75a12c35b543eb24bc80f                                                                           0.0s
+ => => naming to docker.io/library/my-custom-nginx     
+
+dlckdwls763222@c4r8s5 docker-study % docker run -d -p 8081:80 --name my-custom-web my-custom-nginx
+8cc13507394264885ded2e69c04966f7fb5a8ac6e39b44cce04996d1451ed530
+---
+```
+---
+# 8. 포트 매핑 및 접속 증거
+
+### 8-1. 포트 매핑 설정
+* **사용된 옵션:** `-p 8081:80`
+* **설명:** 호스트(내 Mac)의 `8081` 포트로 들어오는 통신 요청을 컨테이너 내부의 Nginx 웹 서버 기본 포트인 `80` 포트로 전달(매핑)하도록 설정했습니다.
+
+### 8-2. 접속 증거 (웹 브라우저 화면)
+* 웹 브라우저에서 `http://localhost:8081`에 접속하여 커스텀 HTML 페이지가 정상적으로 출력되는 것을 확인했습니다.
+
+### 환경 확인 로그
+```bash
+
+dlckdwls763222@c4r8s5 docker-study % curl http://localhost:8081
+<h1>Hello! This is my custom Nginx server!</h1>
+
+```
+---
+
+# 9. Docker 볼륨 영속성 검증
+
+1. 도커의 치명적인 약점: "PC방 컴퓨터"
+도커 컨테이너는 기본적으로 **'일회용 컴퓨터(PC방 컴퓨터)'**와 같습니다.
+우리가 PC방 컴퓨터 바탕화면에 중요한 과제 파일을 저장해 둬도, 컴퓨터를 껐다 켜면 싹 다 날아가고 초기화되죠?
+
+도커 컨테이너도 똑같습니다. 컨테이너 안에서 데이터베이스를 만들고, 파일을 저장해 둬도 컨테이너를 삭제(rm)하는 순간 그 안의 모든 데이터는 영원히 사라집니다.
+
+2. 해결책: "도커 볼륨(Volume) = 외장 하드(USB)"
+이 문제를 해결하기 위해 도커가 만든 기능이 바로 **'볼륨(Volume)'**입니다.
+볼륨은 컨테이너라는 컴퓨터에 꽂아서 쓸 수 있는 **'아주 튼튼한 외장 하드(또는 USB)'**라고 생각하시면 완벽합니다.
+
+PC방 컴퓨터(컨테이너)가 초기화되거나 부서져도, 내 주머니 속에 있는 USB(볼륨)는 안전하겠죠?
+내일 다른 PC방 컴퓨터(새로운 컨테이너)에 가서 그 USB를 꽂으면, 어제 하던 과제를 그대로 이어서 할 수 있습니다.
+3. 영속성(Persistence)이란?
+과제 제목에 있는 **'영속성'**은 한자어로 "영원히 계속된다"는 뜻입니다. IT 용어로는 **"프로그램이 종료되거나 컴퓨터가 꺼져도 데이터가 날아가지 않고 유지되는 성질"**을 말합니다.
+
+즉, 이번 9번 과제의 목표는 **"컨테이너(컴퓨터)를 삭제해도, 볼륨(USB)에 저장된 데이터는 날아가지 않고 살아남는다(영속성)는 것을 교수님께 증명해라!"**라는 뜻입니다.
+
+💡 9번 과제에서 우리가 할 일 (시나리오)
+우리는 방금 배운 개념을 바탕으로 딱 4단계의 연극을 할 겁니다.
+
+USB 사기: my-data라는 이름의 도커 볼륨(USB)을 하나 만듭니다.
+A 컴퓨터에서 작업하기: container-A를 만들고 USB를 꽂은 뒤, 그 안에 "이 데이터는 살아남을 것이다!"라는 메모를 적습니다.
+A 컴퓨터 박살 내기 💥: container-A를 무자비하게 삭제해 버립니다. (데이터가 날아갔을까 조마조마한 척합니다.)
+B 컴퓨터에서 확인하기: 완전히 새로운 container-B를 만들고 아까 그 USB를 꽂아봅니다. 메모가 그대로 남아있는 것을 확인하고 환호합니다! 🎉
+
+### 9-1. 검증 목적
+컨테이너가 삭제되더라도 데이터가 유실되지 않고 유지(영속성)되는지 Docker Volume을 통해 검증합니다.
+
+### 9-2. 검증 절차 및 결과
+
+**1) 볼륨 생성**
+* **명령어:** `docker volume create mt-data`
+* **출력:** `my-data`
+
+**2) 첫 번째 컨테이너 생성 및 데이터 쓰기**
+* `my-data` 볼륨을 `/workspace` 경로에 마운트하여 컨테이너를 실행하고 텍스트 파일을 생성했습니다.
+* **명령어:** 
+  `docker run -it --name container-A -v my-data:/workspace ubuntu`
+  `echo "This data will survive!" > /workspace/test.txt`
+
+**3) 컨테이너 삭제**
+* 데이터를 작성한 첫 번째 컨테이너를 완전히 삭제했습니다.
+* **명령어:** `docker rm container-A`
+
+**4) 새로운 컨테이너로 데이터 유지 확인 (영속성 증명)**
+* 동일한 볼륨(`my-data`)을 새로운 컨테이너(`container-B`)에 연결하여 실행한 후, 이전 컨테이너에서 작성한 파일이 존재하는지 확인했습니다.
+* **명령어:** 
+  `docker run -it --name container-B -v my-data:/workspace ubuntu`
+  `cat /workspace/test.txt`
+* **출력 결과:** `This data will survive!`
+
+### 9-3. 결론
+컨테이너(`container-A`)를 삭제했음에도 불구하고, Docker Volume(`my-data`)에 저장된 파일은 새로운 컨테이너(`container-B`)에서 그대로 조회되었습니다. 이를 통해 **볼륨을 활용하면 컨테이너의 생명주기와 독립적으로 데이터를 안전하게 영구 보존할 수 있음**을 증명했습니다.
+
+### 환경 확인 로그
+```bash
+dlckdwls763222@c4r8s5 docker-study % docker volume create mt-data
+mt-data
+dlckdwls763222@c4r8s5 docker-study % docker run -it --name container-A -v my-data:/workspace ubuntu
+root@a5919ebb113e:/# 
+root@a5919ebb113e:/# echo "This data will survive!" > /workspace/test.txt
+root@a5919ebb113e:/# cat /workspace/test.txt
+This data will survive!
+root@a5919ebb113e:/# exit
+exit
+dlckdwls763222@c4r8s5 docker-study % docker rm container-A
+container-A
+dlckdwls763222@c4r8s5 docker-study % docker run -it --name container-B -v my-data:/workspace ubuntu
+root@28b4ba610f1e:/# cat /workspace/test.txt
+This data will survive!
+root@28b4ba610f1e:/# exit
+exit
+```
+---
+# 10. Git 과 GitHub란?
+ 1. 개념 
+Git (깃) 게임에서 '저장(Save)'을 하듯이
+Commit (커밋) 
+GitHub (깃허브) = 개발자용 구글 드라이브
+내 맥북(로컬)에만 있는 타임머신 기록을 인터넷(클라우드)에 안전하게 백업하고, 다른 사람에게 보여줄 수 있는 웹사이트입니다.
+Push (푸시) = 밀어 올리기 (업로드)
+내 맥북에 저장된 사진(커밋)들을 인터넷(GitHub)으로 쭈욱 밀어 올리는 행위입니다.
+요약: 맥북에서 Git으로 사진(Commit)을 찍고, 그 사진들을 GitHub로 업로드(Push)하는 과정입니다!
+
+
+---
+# 3. 수행항목 체크리스트
+
+본 미션에서 달성해야 할 핵심 학습 항목과 현재 진행 상태입니다.
+
+| 상태 | 학습 항목 | 핵심 개념 | 달성 목표 |
+| :---: | :--- | :--- | :--- |
+| ✅ | **터미널 (Terminal)** | CLI(명령줄) 기반으로 컴퓨터와 소통하는 창구 | `cd`, `ls`, `mkdir` 등 기본 리눅스 명령어 숙지 |
+| ✅  | **권한 (Permission)** | 파일/폴더를 읽고(r), 쓰고(w), 실행(x)할 수 있는 권한 | `chmod`, `sudo`의 필요성 이해 및 권한 오류 해결 |
+| ✅ | **Git / GitHub** | 코드 버전 관리(Git) 및 원격 저장소(GitHub) | `commit`, `push`를 통한 코드 백업 및 협업 환경 구축 |
+| ✅ | **Docker (도커)** | 환경에 구애받지 않는 격리된 컨테이너 실행 환경 | 이미지와 컨테이너의 차이 이해, `docker run` 실행 |
+| ✅ | **포트 (Port)** | 호스트(내 PC)와 컨테이너를 연결하는 통신 출입구 | 포트 포워딩(`-p`)을 통해 웹 브라우저로 컨테이너 접속 |
+| ✅  | **마운트 (Bind Mount)**| 내 PC의 폴더를 컨테이너 내부와 실시간으로 연결 | 로컬에서 수정한 코드를 컨테이너 재시작 없이 즉시 반영 |
+| ✅  | **볼륨 (Volume)** | 도커가 직접 관리하는 안전한 데이터 저장 공간 | 컨테이너가 삭제되어도 DB 등의 데이터가 영구 보존되도록 설정 |
+| ✅  | **Dockerfile** | 나만의 도커 이미지를 만들기 위한 설정(레시피) 파일 | `docker build`를 통해 내 코드가 담긴 커스텀 이미지 생성 |
+
+> **💡 진행 상태 표시**
+> - ✅ : 완료 (환경 설정 및 개념 이해 완료)
+> - ⬜️ : 진행 예정 (앞으로 학습 및 실습할 내용)
+
+
+# 5. Docker 설치 및 기본 운영 명령 실습
+5-1. 도커의 핵심 개념 (이미지와 컨테이너)
+이미지 (Image)
+프로그램을 실행하는 데 필요한 모든 것(OS, 설정, 코드)이 담겨 있는 변하지 않는 원본 파일
+
+컨테이너 (Container) 
+이미지를 바탕으로 실제로 메모리에 올라가 실행된 상태를 말한다. 하나의 이미지로 여러 개의 컨테이너를 독립적으로 실행할 수 있음
+
+포트 매핑 (Port Mapping) = "-p 8080:80"
+내 컴퓨터(Mac)의 특정 포트(예: 8080)로 들어오는 접속을, 도커 컨테이너 내부의 포트(예: 80)로 연결해주는 작업
+
+5-2. Docker 설치 및 기본 점검
+| 진행 단계 | 실행 결과 및 설명 | 명령어 |
+| --- | --- | --- |
+| **Docker 버전 확인** | 설치된 Docker 버전과 빌드 정보 확인 | `docker --version` |
+| **Docker 데몬 확인** | Docker 클라이언트, 서버, 이미지 및 컨테이너 상태 확인 | `docker info` |
+
+### 환경 확인 로그
+```bash
+$ % docker --version
+Docker version 28.5.2, build ecc6942
+$ % docker info
+# 맨 처음에 했던 명령어라 생략
+```
+5-3. 이미지 다운로드 및 목록 확인
+| **이미지 다운로드** | Docker Hub에서 Nginx Alpine 이미지 다운로드 | `docker pull nginx:alpine` |
+| **이미지 목록 확인** | 내려받은 이미지의 이름, 태그, ID 및 크기 확인 | `docker images` |
+
+```bash
+$ % docker pull nginx:alpine
+alpine: Pulling from library/nginx
+Digest: sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752
+Status: Image is up to date for nginx:alpine
+docker.io/library/nginx:alpine
+$ % docker images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+nginx         alpine    f0ba77f796e5   2 weeks ago    62.4MB
+nginx         latest    4e5db4761e0f   2 weeks ago    161MB
+hello-world   latest    e2ac70e7319a   4 months ago   10.1kB
+```
+5-4 컨테이너 실행
+| **컨테이너 실행** | Nginx 컨테이너를 백그라운드로 실행하고 `8080:80` 포트 연결 | `docker run -d --name docker-ops-test -p 8080:80 nginx:alpine` |
+| **실행 목록 확인** | 현재 실행 중인 컨테이너 확인 | `docker ps` |
+| **웹 서버 확인** | 호스트의 8080 포트를 통해 Nginx 응답 확인 | `curl http://localhost:8080` |
+| **로그 확인** | 컨테이너에 기록된 HTTP 요청 로그 확인 | `docker logs docker-ops-test` |
+| **리소스 확인** | CPU, 메모리, 네트워크 및 디스크 사용량 확인 | `docker stats --no-stream docker-ops-test` |
+| **컨테이너 중지** | 실행 중인 컨테이너 중지 | `docker stop docker-ops-test` |
+| **전체 목록 확인** | 종료된 컨테이너를 포함한 전체 목록 확인 | `docker ps -a` |
+
+3
+
+docker.io/library/nginx:alpine
+각 부분의 의미는:
+docker.io: Docker Hub
+library/nginx: Docker 공식 Nginx 이미지
+alpine: Alpine Linux 기반 버전
+
+Docker Hub → Docker 엔진 → Docker 전용 내부 저장공간
+
+Dockerfile 작성
+      ↓ docker build
+이미지 생성
+      ↓ docker run
+컨테이너 실행
+      ↓
+로그·상태·리소스 확인
 
 ### 환경 확인 로그
 ```bash
