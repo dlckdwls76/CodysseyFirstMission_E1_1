@@ -39,6 +39,7 @@ git version 2.53.0
 ```
 ### 실행 증거
 [실행 환경 확인 로그 보기](./images/environment-check.png)
+
 [실행 환경 확인 로그 보기](./images/environment-check2.png)
 
 ---
