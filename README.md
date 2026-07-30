@@ -1,10 +1,12 @@
 # 개발 워크스테이션 구축
 ---
+
 # 1. 미션 소개 (요약)
  이 미션은 개발을 시작하기 전에 기본환경인 리눅스 CLI환경,Docker, Git/GitHub를 직접 세팅하고 활용해 보는 것을 목표
  터미널을 통해 작업 디렉토리와 권한을 관리하고, Docker를 이용해 컨테이너를 실행 및 관리한다.
 이 과정에서 이미지와 컨테이너의 차이, 격리된 실행환경, 포트 및 스토리지 연결 방식 등 Docker의 핵심 개념을 이해한다. 최종적으로는 "내 컴퓨터에서만 실행되는 환경"이 아니라, 팀원 누구나 같은 방식으로 실행할 수 있는 개발 환경을 만드는 것을 경험한다.
 
+---
 # 2. 실행환경(OS/쉘/터미널, Docker 버전, Git 버전)
  항목 | 사용 환경 | 확인 명령 |
 | --- | --- | --- |
@@ -36,11 +38,12 @@ $ git --version
 git version 2.53.0
 ```
 ### 실행 증거
-
 [실행 환경 확인 로그 보기](./images/environment-check.png)
+[실행 환경 확인 로그 보기](./images/environment-check2.png)
 
 ---
-# 3. 도커 연습용 폴더 만들기 & 터미널 기본 명령어 및 파일 조작 실습
+
+# 3. 연습용 폴더 만들기 & 터미널 기본 명령어 및 파일 조작 실습
 
 | 진행 단계 | 실행 결과 및 설명 | 명령어 |
 | --- | --- | --- |
@@ -56,26 +59,7 @@ git version 2.53.0
 
 ### 환경 확인 로그
 ```bash
-dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % pwd 
-/Users/dlckdwls763222/CodysseyFirstMission_E1_1
-dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % mkdir docker-study
-dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % cd coker-study
-cd: no such file or directory: coker-study
-dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % pwd
-/Users/dlckdwls763222/CodysseyFirstMission_E1_1
-dlckdwls763222@c3r5s3 CodysseyFirstMission_E1_1 % cd docker-study
-dlckdwls763222@c3r5s3 docker-study % pwd
-/Users/dlckdwls763222/CodysseyFirstMission_E1_1/docker-study
-dlckdwls763222@c4r8s5 docker-study % ls -al
-total 8
-drwxr-xr-x  3 dlckdwls763222  dlckdwls763222   96 Jul 29 18:23 .
-drwxr-xr-x  6 dlckdwls763222  dlckdwls763222  192 Jul 29 18:18 ..
--rw-r--r--  1 dlckdwls763222  dlckdwls763222    3 Jul 29 18:18 test.txt
-dlckdwls763222@c4r8s5 docker-study % cat test.txt
-123%
-dlckdwls763222@c4r8s5 docker-study % cp test.txt copy.txt
-dlckdwls763222@c4r8s5 docker-study % mv copy.txt hello.txt
-dlckdwls763222@c4r8s5 docker-study % rm hello.txt
+
 ```
 
 
