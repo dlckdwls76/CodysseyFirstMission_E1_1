@@ -60,18 +60,30 @@ git version 2.53.0
 
 ### 환경 확인 로그
 ```bash
+$ CodysseyFirstMission_E1_1 % pwd
+/Users/dlckdwls763222/CodysseyFirstMission_E1_1
+$ CodysseyFirstMission_E1_1 % mkdir docker-study
+$ CodysseyFirstMission_E1_1 % cd docker-study
+$ docker-study % ls -al
+total 0
+drwxr-xr-x  2 dlckdwls763222  dlckdwls763222   64  7 30 18:16 .
+drwxr-xr-x  7 dlckdwls763222  dlckdwls763222  224  7 30 18:16 ..
+$ docker-study % touch test.txt
+$ docker-study % cat test.txt
+코디세이 2기생 이창진%                                                                                                                
+$ docker-study % cp test.txt copy.txt
+$ docker-study % mv copy.txt hello.txt
 
 ```
-
+### 실행 증거
+[실행 환경 확인 로그 보기](./images/study-terminal.png)
 
 절대 경로 (Absolute Path)
-
-개념: 변하지 않는 **'전체 도로명 주소'**입니다. (예: 서울특별시 강남구 테헤란로 123)
+개념: 변하지 않는 **'전체 도로명 주소'**입니다.
 특징: 내가 지금 어디에 있든, 이 주소를 입력하면 무조건 그곳으로 갑니다. 맥(Mac)에서는 항상 최상위 뿌리인 / 부터 시작합니다.
 예시: /Users/dlckdwls763222/CodysseyFirstMission_E1_1/docker-study
 
 상대 경로 (Relative Path)
-
 개념: **'지금 내가 있는 위치'**를 기준으로 말하는 주소입니다. (예: "지금 있는 곳에서 뒤로 한 칸 가", "내 바로 앞에 있는 폴더로 들어가")
 특징: 터미널에서 가장 많이 쓰는 방식입니다.
 
@@ -110,63 +122,50 @@ x (Execute, 1점): 실행 권한 (프로그램 실행, 폴더 들어가기)
 
 ### 환경 확인 로그
 ```bash
-dlckdwls763222@c3r5s3 docker-study % touch test.txt
-dlckdwls763222@c3r5s3 docker-study % ls -l test.txt
--rw-r--r--  1 dlckdwls763222  dlckdwls763222  0 Jul 29 17:06 test.txt
-dlckdwls763222@c3r5s3 docker-study % chmod 755 test.txt
-dlckdwls763222@c3r5s3 docker-study % ls -l test.txt
--rwxr-xr-x  1 dlckdwls763222  dlckdwls763222  0 Jul 29 17:06 test.txt
-dlckdwls763222@c3r5s3 docker-study % chmod644 test.txt
-zsh: command not found: chmod644
-dlckdwls763222@c3r5s3 docker-study % chmod 644 test.txt
-dlckdwls763222@c3r5s3 docker-study % ls -l text.txt
-ls: text.txt: No such file or directory
-dlckdwls763222@c3r5s3 docker-study % ls -l test.txt
--rw-r--r--  1 dlckdwls763222  dlckdwls763222  0 Jul 29 17:06 test.txt
-dlckdwls763222@c4r8s5 CodysseyFirstMission_E1_1 % mkdir perm_dir
-dlckdwls763222@c4r8s5 CodysseyFirstMission_E1_1 % touch perm_file.txt
-dlckdwls763222@c4r8s5 CodysseyFirstMission_E1_1 % ls -la
-total 80
-drwxr-xr-x   8 dlckdwls763222  dlckdwls763222    256 Jul 29 18:46 .
-drwxr-x---+ 14 dlckdwls763222  dlckdwls763222    448 Jul 29 18:18 ..
-drwxr-xr-x  12 dlckdwls763222  dlckdwls763222    384 Jul 29 18:18 .git
-drwxr-xr-x   3 dlckdwls763222  dlckdwls763222     96 Jul 29 18:45 docker-study
-drwxr-xr-x   2 dlckdwls763222  dlckdwls763222     64 Jul 29 18:45 perm_dir
--rw-r--r--   1 dlckdwls763222  dlckdwls763222      0 Jul 29 18:46 perm_file.txt
--rw-r--r--   1 dlckdwls763222  dlckdwls763222  24398 Jul 29 18:18 README.md
--rw-r--r--   1 dlckdwls763222  dlckdwls763222  13795 Jul 29 18:18 README2.md
-dlckdwls763222@c4r8s5 CodysseyFirstMission_E1_1 % chmod 777 perm_file.txt
-dlckdwls763222@c4r8s5 CodysseyFirstMission_E1_1 % chmod 700 perm_dir
-dlckdwls763222@c4r8s5 CodysseyFirstMission_E1_1 % ls -al
-total 80
-drwxr-xr-x   8 dlckdwls763222  dlckdwls763222    256 Jul 29 18:46 .
-drwxr-x---+ 14 dlckdwls763222  dlckdwls763222    448 Jul 29 18:18 ..
-drwxr-xr-x  12 dlckdwls763222  dlckdwls763222    384 Jul 29 18:18 .git
-drwxr-xr-x   3 dlckdwls763222  dlckdwls763222     96 Jul 29 18:45 docker-study
-drwx------   2 dlckdwls763222  dlckdwls763222     64 Jul 29 18:45 perm_dir
--rwxrwxrwx   1 dlckdwls763222  dlckdwls763222      0 Jul 29 18:46 perm_file.txt
--rw-r--r--   1 dlckdwls763222  dlckdwls763222  24398 Jul 29 18:18 README.md
--rw-r--r--   1 dlckdwls763222  dlckdwls763222  13795 Jul 29 18:18 README2.md
+$ % mkdir perm_dir
+$ % touch perm_file.txt
+$ % ls -al
+total 56
+drwxr-xr-x   9 dlckdwls763222  dlckdwls763222    288  7 30 18:30 .
+drwxr-x---+ 21 dlckdwls763222  dlckdwls763222    672  7 30 18:00 ..
+drwxr-xr-x  16 dlckdwls763222  dlckdwls763222    512  7 30 18:16 .git
+drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 18:29 docker-study
+drwxr-xr-x   5 dlckdwls763222  dlckdwls763222    160  7 30 18:19 images
+drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 15:34 missionscreenshots
+drwxr-xr-x   2 dlckdwls763222  dlckdwls763222     64  7 30 18:30 perm_dir
+-rw-r--r--   1 dlckdwls763222  dlckdwls763222      0  7 30 18:30 perm_file.txt
+-rw-r--r--   1 dlckdwls763222  dlckdwls763222  28256  7 30 18:28 README.md
+$ CodysseyFirstMission_E1_1 % chmod 777 perm_file.txt
+$ CodysseyFirstMission_E1_1 % chmod 700 perm_dir
+$ CodysseyFirstMission_E1_1 % ls -al 
+total 56
+drwxr-xr-x   9 dlckdwls763222  dlckdwls763222    288  7 30 18:30 .
+drwxr-x---+ 21 dlckdwls763222  dlckdwls763222    672  7 30 18:00 ..
+drwxr-xr-x  16 dlckdwls763222  dlckdwls763222    512  7 30 18:16 .git
+drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 18:29 docker-study
+drwxr-xr-x   5 dlckdwls763222  dlckdwls763222    160  7 30 18:19 images
+drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 15:34 missionscreenshots
+drwx------   2 dlckdwls763222  dlckdwls763222     64  7 30 18:30 perm_dir
+-rwxrwxrwx   1 dlckdwls763222  dlckdwls763222      0  7 30 18:30 perm_file.txt
+-rw-r--r--   1 dlckdwls763222  dlckdwls763222  28256  7 30 18:28 README.md
 ```
+### 실행 증거
+[실행 환경 확인 로그 보기](./images/permission-check.png)
+
 ---
 
-# 5. 도커 핵심 개념 및 컨테이너 실행하기
+# 5. Docker운영/검증
 1. 도커의 핵심 개념 (이미지와 컨테이너)
 이미지 (Image)
 프로그램을 실행하는 데 필요한 모든 것(OS, 설정, 코드)이 담겨 있는 변하지 않는 원본 파일이다.
+
 컨테이너 (Container) 
 이미지를 바탕으로 실제로 메모리에 올라가 실행된 상태를 말한다. 하나의 이미지로 여러 개의 컨테이너를 독립적으로 실행할 수 있다.
+
 포트 매핑 (Port Mapping) = "-p 8080:80"
 내 컴퓨터(Mac)의 특정 포트(예: 8080)로 들어오는 접속을, 도커 컨테이너 내부의 포트(예: 80)로 연결해 주는 작업이다.
 
 2. 도커 기본 명령어 실습
-진행 단계	실행 결과 및 설명	명령어
-Hello World 실행	도커가 정상 작동하는지 확인하는 테스트용 컨테이너 실행	docker run hello-world
-전체 컨테이너 조회	실행 중이거나 종료된 모든 컨테이너의 목록(ID, 상태 등) 확인	docker ps -a
-웹 서버(Nginx) 실행	백그라운드(-d)에서 8080포트를 열고 my-web이라는 이름으로 Nginx 실행	docker run -d -p 8080:80 --name my-web nginx
-실행 중인 컨테이너 조회	현재 살아서 돌아가고 있는 컨테이너만 확인	docker ps
-컨테이너 삭제	실습이 끝난 컨테이너를 강제(-f)로 삭제	docker rm -f my-web
-
 | 진행 단계 | 실행 결과 및 설명 | 명령어 |
 | --- | --- | --- |
 | **컨테이너 실행** | `hello-world` 이미지를 다운로드하고 컨테이너를 실행하여 환영 메시지 출력 | `docker run hello-world` |
@@ -179,80 +178,7 @@ Hello World 실행	도커가 정상 작동하는지 확인하는 테스트용 �
 
 ### 환경 확인 로그
 ```bash
-dlckdwls763222@c3r5s3 docker-study % docker run hello-world
 
-Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker ID:
- https://hub.docker.com/
-
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/
-
-dlckdwls763222@c4r8s5 docker-study % docker ps -a
-CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                      PORTS     NAMES
-767c627c402d   hello-world   "/hello"   35 seconds ago   Exited (0) 34 seconds ago             pensive_hopper
-dlckdwls763222@c4r8s5 docker-study % docker run -d -p 8080:80 --name my-web nginx  
-Unable to find image 'nginx:latest' locally
-latest: Pulling from library/nginx
-062e450697fa: Pull complete 
-82454cdbf456: Pull complete 
-3c7ab7949321: Pull complete 
-cacfcdd01f30: Pull complete 
-b6698f04e005: Pull complete 
-2bedaf25031a: Pull complete 
-d26f27cc8c41: Pull complete 
-Digest: sha256:5a88c9c45479443d7be2eadc894b4ed0a9801bae03d97a5760ae13b5c2005942
-Status: Downloaded newer image for nginx:latest
-3bbae6d4e2c5c9965af782b0bf938f13f4707fd8cd97f1b675c760e549e7d9c1
-dlckdwls763222@c4r8s5 docker-study % docker ps
-CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                                     NAMES
-3bbae6d4e2c5   nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   my-web
-
-dlckdwls763222@c4r8s5 docker-study % docker logs my-web
-/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
-/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
-10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
-/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
-/docker-entrypoint.sh: Configuration complete; ready for start up
-2026/07/29 10:01:30 [notice] 1#1: using the "epoll" event method
-2026/07/29 10:01:30 [notice] 1#1: nginx/1.31.3
-2026/07/29 10:01:30 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19) 
-2026/07/29 10:01:30 [notice] 1#1: OS: Linux 6.17.8-orbstack-00308-g8f9c941121b1
-2026/07/29 10:01:30 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 20480:1048576
-2026/07/29 10:01:30 [notice] 1#1: start worker processes
-2026/07/29 10:01:30 [notice] 1#1: start worker process 29
-2026/07/29 10:01:30 [notice] 1#1: start worker process 30
-2026/07/29 10:01:30 [notice] 1#1: start worker process 31
-2026/07/29 10:01:30 [notice] 1#1: start worker process 32
-2026/07/29 10:01:30 [notice] 1#1: start worker process 33
-2026/07/29 10:01:30 [notice] 1#1: start worker process 34
-192.168.215.1 - - [29/Jul/2026:10:02:29 +0000] "GET / HTTP/1.1" 200 896 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" "-"
-192.168.215.1 - - [29/Jul/2026:10:02:29 +0000] "GET /favicon.ico HTTP/1.1" 404 555 "http://localhost:8080/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" "-"
-2026/07/29 10:02:29 [error] 29#29: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.215.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost:8080", referrer: "http://localhost:8080/"
-
-dlckdwls763222@c4r8s5 docker-study % docker stop my-web
-my-web
-
-dlckdwls763222@c4r8s5 docker-study % docker rm -f my-web                                                                                                                  
-my-web
 ```
 
 ---
