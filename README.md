@@ -34,9 +34,11 @@ $ docker info
 
 $ git --version
 git version 2.53.0
-
-![실행 환경 확인 로그](./images/environment-check.png)
 ```
+### 실행 증거
+
+[실행 환경 확인 로그 보기](./images/environment-check.png)
+
 ---
 # 3. 도커 연습용 폴더 만들기 & 터미널 기본 명령어 및 파일 조작 실습
 
