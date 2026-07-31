@@ -348,6 +348,39 @@ Hello, Docker Volume!
 
 [실행 환경 확인 로그 보기](./images/docker-volume.png)
 
+
+### 9-3. 바인드 마운트 (Bind Mount) 반영 검증 절차
+
+호스트(내 컴퓨터)의 디렉토리를 컨테이너에 연결하고, 호스트에서 파일을 수정했을 때 컨테이너를 재시작하지 않아도 즉시 반영되는지 확인합니다.
+
+| 진행 단계 | 실행 결과 및 설명 | 명령어 |
+| --- | --- | --- |
+| **호스트 파일 생성** | 호스트에 테스트 폴더 및 파일 생성 (변경 전) | `mkdir bind-test`<br>`echo "Before: 호스트 파일 변경 전" > bind-test/test.txt` |
+| **컨테이너 실행** | 호스트의 폴더를 컨테이너의 `/app`에 바인드 마운트 | `docker run -d --name bind-container -v $(pwd)/bind-test:/app ubuntu sleep 1000` |
+| **변경 전 확인** | 컨테이너 내부에서 파일 내용 확인 | `docker exec bind-container cat /app/test.txt` |
+| **호스트 파일 수정** | 호스트에서 파일 내용 변경 | `echo "After: 호스트 파일 변경 완료!" > bind-test/test.txt` |
+| **변경 후 확인** | 컨테이너 재시작 없이 변경된 내용이 즉시 반영됨을 확인 | `docker exec bind-container cat /app/test.txt` |
+
+### 9-4. 바인드 마운트 환경 확인 로그 및 캡처
+
+**[실행 및 검증 로그]**
+```bash
+$ mkdir bind-test
+$ echo "Before: 호스트 파일 변경 전" > bind-test/test.txt
+
+$ docker run -d --name bind-container -v $(pwd)/bind-test:/app ubuntu sleep 1000
+
+$ docker exec bind-container cat /app/test.txt
+Before: 호스트 파일 변경 전
+
+$ echo "After: 호스트 파일 변경 완료!" > bind-test/test.txt
+
+$ docker exec bind-container cat /app/test.txt
+After: 호스트 파일 변경 완료!
+
+```
+[실행 환경 확인 로그 보기](./images/bind.png)
+
 ---
 
 # 10. Git 설정 및 GitHub 연동
@@ -377,7 +410,8 @@ $ git config --list
 
 ---
 
-# 11. 수행항목 체크리스트
+
+# 12. 수행항목 체크리스트
 
 본 미션에서 달성해야 할 핵심 학습 항목과 현재 진행 상태입니다.
 
@@ -391,8 +425,33 @@ $ git config --list
 | ✅  | **마운트 (Bind Mount)**| 내 PC의 폴더를 컨테이너 내부와 실시간으로 연결 | 로컬에서 수정한 코드를 컨테이너 재시작 없이 즉시 반영 |
 | ✅  | **볼륨 (Volume)** | 도커가 직접 관리하는 안전한 데이터 저장 공간 | 컨테이너가 삭제되어도 DB 등의 데이터가 영구 보존되도록 설정 |
 | ✅  | **Dockerfile** | 나만의 도커 이미지를 만들기 위한 설정(레시피) 파일 | `docker build`를 통해 내 코드가 담긴 커스텀 이미지 생성 |
+---
 
-> **💡 진행 상태 표시**
-> - ✅ : 완료 (환경 설정 및 개념 이해 완료)
-> - ⬜️ : 진행 예정 (앞으로 학습 및 실습할 내용)
+# 11. 트러블 슈팅
 
+1. 터미널 dquote> 입력 대기 상태 무한 루프 문제 (바인드 마운팅)
+문제 (Problem)
+호스트에서 파일 내용을 변경하기 위해 echo "After: 호스트 파일 변경 완료!" > bind-test/test.txt 명령어를 입력했으나, 명령이 실행되지 않고 다음 줄에 dquote> 프롬프트가 뜨며 입력을 계속 대기하는 현상이 발생함.
+원인 가설 (Hypothesis)
+Mac의 기본 터미널(zsh) 환경에서 큰따옴표(") 안에 한글과 느낌표(!) 같은 특수문자가 포함될 경우, 터미널이 문자열이 제대로 닫히지 않았거나(스마트 인용부호 변환 문제) 히스토리 확장 명령어로 오인하여 큰따옴표가 닫힐 때까지 입력을 대기하는 것으로 추정함.
+확인 (Verification)
+dquote> 상태에서 엔터를 쳐도 빠져나가지 못하는 것을 확인. 터미널이 문자열의 끝을 인식하지 못하고 있음을 파악함.
+해결 및 대안 (Solution)
+Ctrl + C를 입력하여 현재 대기 중인 프로세스를 강제 취소함.
+큰따옴표(") 대신, 내부의 모든 문자를 있는 그대로(Literal) 처리하는 **작은따옴표(')**를 사용하여 명령어를 재작성함.
+echo 'After: 호스트 파일 변경 완료!' > bind-test/test.txt 로 실행하여 정상적으로 파일 내용이 덮어쓰기 된 것을 확인 완료.
+
+2. Docker 컨테이너 이름 충돌 (Name Conflict) 에러
+문제 (Problem)
+바인드 마운트 실습 중 docker run -d --name bind-container ... 명령어를 실행했을 때, 다음과 같은 에러가 발생하며 컨테이너가 생성되지 않음.
+에러 로그: docker: Error response from daemon: Conflict. The container name "/bind-container" is already in use by container...
+원인 가설 (Hypothesis)
+Docker는 컨테이너의 이름을 고유하게 관리함. 이전 단계에서 실습을 진행하며 이미 bind-container라는 이름으로 컨테이너를 생성해 두었기 때문에, 동일한 이름으로 새로운 컨테이너를 생성하려고 시도하여 충돌(Conflict)이 발생한 것으로 추정함.
+확인 (Verification)
+에러 메시지(already in use)를 통해 해당 이름이 이미 사용 중임을 명확히 확인함.
+해결 및 대안 (Solution)
+두 가지 해결 방법 중, 실습 환경을 깔끔하게 유지하기 위해 기존 컨테이너를 삭제하는 방식을 선택함.
+docker rm -f bind-container 명령어를 사용하여 기존에 점유되어 있던 컨테이너를 강제 삭제함.
+이후 다시 docker run 명령어를 실행하여 에러 없이 정상적으로 바인드 마운트 컨테이너가 실행됨을 확인 완료.
+
+---
