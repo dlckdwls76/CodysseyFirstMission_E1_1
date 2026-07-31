@@ -174,9 +174,8 @@ drwx------   2 dlckdwls763222  dlckdwls763222     64  7 30 18:30 perm_dir
 | **이미지 목록 확인** | 내려받은 이미지의 이름, 태그, ID 및 크기 확인 | `docker images` |
 | **컨테이너 실행** | Nginx 컨테이너를 백그라운드로 실행하고 `8080:80` 포트 연결 | `docker run -d --name docker-ops-test -p 8080:80 nginx:alpine` |
 | **실행 목록 확인** | 현재 실행 중인 컨테이너 확인 | `docker ps` |
-| **웹 서버 확인** | 호스트의 8080 포트를 통해 Nginx 응답 확인 | `curl http://localhost:8080` |
-| **로그 확인** | 컨테이너에 기록된 HTTP 요청 로그 확인 | `docker logs docker-ops-test` |
-| **리소스 확인** | CPU, 메모리, 네트워크 및 디스크 사용량 확인 | `docker stats --no-stream docker-ops-test` |
+| **컨테이너 로그 확인** | Nginx 컨테이너가 실행되면서 남긴 시스템 로그 및 접속 기록 확인| `docker logs docker-ops-test`|
+| **컨테이너 리소스 확인** | 컨테이너가 사용 중인 CPU, 메모리(MEM USAGE), 네트워크 I/O 실시간 확인 | `docker stats --no-stream` |
 | **컨테이너 중지** | 실행 중인 컨테이너 중지 | `docker stop docker-ops-test` |
 | **전체 목록 확인** | 종료된 컨테이너를 포함한 전체 목록 확인 | `docker ps -a` |
 
@@ -201,14 +200,39 @@ Dockerfile 작성
 $ % docker --version
 Docker version 28.5.2, build ecc6942
 $ % docker info
-
+$ % docker pull nginx:alpine
+$ % docker images
+$ % docker run -d --name docker-ops-test -p 8080:80 nginx:alpine
+$ % docker ps
+$ % docker logs my-nginx
+$ % docker stats --no-stream
+$ % docker stop my-nginx
+$ % docker ps -a
+ 
 ```
 ### 실행 증거
 [실행 환경 확인 로그 보기](./images/docker-version.png)
 
 [실행 환경 확인 로그 보기](./images/docker-info.png)
 
+[실행 환경 확인 로그 보기](./images/docker-pull-nginx.png)
+
+[실행 환경 확인 로그 보기](./images/docker-images.png)
+
+[실행 환경 확인 로그 보기](./images/docker-run.png)
+
+[실행 환경 확인 로그 보기](./images/docker-ps.png)
+
+[실행 환경 확인 로그 보기](./images/docker-my-nginx.png)
+
+[실행 환경 확인 로그 보기](./images/docker-no-stream.png)
+
+[실행 환경 확인 로그 보기](./images/docker-stop.png)
+
+[실행 환경 확인 로그 보기](./images/docker-ps-a.png)
+
 ---
+
 # 6.컨테이너 실행 실습 및 개념 정리
 
 ### 6-1. 컨테이너 실행 및 내부 진입 실습
@@ -220,54 +244,31 @@ $ % docker info
 | **내부 텍스트 출력** | `Hello Ubuntu!` 출력 확인 | `echo "Hello Ubuntu!"` |
 | **컨테이너 빠져나오기** | 컨테이너가 종료되며 다시 Mac 터미널로 복귀함 | `exit` |
 
+
+### 환경 확인 로그
+```bash
+$ % docker run hello-world 
+$ % docker run -it ubuntu bash  # it은 사용자가 터미널을 통해 컨테이너와 상호작용 할 수 있도록 함.
+$ % root@230e3f2c8909:/# ls
+$ % root@230e3f2c8909:/# ehco "Hello Ubuntu"
+$ % root@230e3f2c8909:/# exit
+```
+[실행 환경 확인 로그 보기](./images/docker-run-helloworld.png)
+
+[실행 환경 확인 로그 보기](./images/docker-run-it-ubuntu-bash.png)
+
+[실행 환경 확인 로그 보기](./images/ls-echo-exit.png)
+
 ### 6-2. 컨테이너 종료와 유지 (attach vs exec) 차이점 정리
 * **`docker run -it` (또는 `attach`)**: 
   컨테이너의 메인 프로세스에 직접 접속하는 방식이다. 작업 후 `exit` 명령어로 빠져나오면 메인 프로세스가 종료되므로 **컨테이너 자체도 함께 종료(Stop)** 된다.
 * **`docker exec -it`**: 
   **이미 백그라운드에서 실행 중인 컨테이너**에 새로운 터미널을 열어 접속하는 방식이다. 작업 후 `exit`로 빠져나와도 내가 접속했던 터미널만 닫힐 뿐, **컨테이너는 종료되지 않고 계속 실행(유지)** 된다.
 
-### 환경 확인 로그
-```bash
-dlckdwls763222@c4r8s5 docker-study % docker run hello-world 
 
-Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker ID:
- https://hub.docker.com/
-
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/
-
-dlckdwls763222@c4r8s5 docker-study % docker run -it ubuntu bash
-Unable to find image 'ubuntu:latest' locally
-Blatest: Pulling from library/ubuntu
-ed819469700f: Pull complete 
-a3679419df18: Pull complete 
-Digest: sha256:3131b4cc82a783df6c9df078f86e01819a13594b865c2cad47bd1bca2b7063bb
-Status: Downloaded newer image for ubuntu:latest
-root@ad52d768be9d:/# 
-root@ad52d768be9d:/# ls
-bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
-root@ad52d768be9d:/# echo "Hello Ubuntu!"
-Hello Ubuntu!
-root@ad52d768be9d:/# exit
-exit
-dlckdwls763222@c4r8s5 docker-study % 
-```
 ---
+
+
 
 # 7. 기존 Dockerfile 기반 커스텀 이미지 제작
 
