@@ -60,19 +60,15 @@ git version 2.53.0
 
 ### 환경 확인 로그
 ```bash
-$ CodysseyFirstMission_E1_1 % pwd
-/Users/dlckdwls763222/CodysseyFirstMission_E1_1
-$ CodysseyFirstMission_E1_1 % mkdir docker-study
-$ CodysseyFirstMission_E1_1 % cd docker-study
-$ docker-study % ls -al
-total 0
-drwxr-xr-x  2 dlckdwls763222  dlckdwls763222   64  7 30 18:16 .
-drwxr-xr-x  7 dlckdwls763222  dlckdwls763222  224  7 30 18:16 ..
-$ docker-study % touch test.txt
-$ docker-study % cat test.txt
-코디세이 2기생 이창진%                                                                                                                
-$ docker-study % cp test.txt copy.txt
-$ docker-study % mv copy.txt hello.txt
+$ % pwd
+
+$ % mkdir docker-study
+$ % cd docker-study
+$ % ls -al
+$ % touch test.txt
+$ % cat test.txt                                                                                                               
+$ % cp test.txt copy.txt
+$ % mv copy.txt hello.txt
 
 ```
 ### 실행 증거
@@ -125,29 +121,10 @@ x (Execute, 1점): 실행 권한 (프로그램 실행, 폴더 들어가기)
 $ % mkdir perm_dir
 $ % touch perm_file.txt
 $ % ls -al
-total 56
-drwxr-xr-x   9 dlckdwls763222  dlckdwls763222    288  7 30 18:30 .
-drwxr-x---+ 21 dlckdwls763222  dlckdwls763222    672  7 30 18:00 ..
-drwxr-xr-x  16 dlckdwls763222  dlckdwls763222    512  7 30 18:16 .git
-drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 18:29 docker-study
-drwxr-xr-x   5 dlckdwls763222  dlckdwls763222    160  7 30 18:19 images
-drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 15:34 missionscreenshots
-drwxr-xr-x   2 dlckdwls763222  dlckdwls763222     64  7 30 18:30 perm_dir
--rw-r--r--   1 dlckdwls763222  dlckdwls763222      0  7 30 18:30 perm_file.txt
--rw-r--r--   1 dlckdwls763222  dlckdwls763222  28256  7 30 18:28 README.md
-$ CodysseyFirstMission_E1_1 % chmod 777 perm_file.txt
-$ CodysseyFirstMission_E1_1 % chmod 700 perm_dir
-$ CodysseyFirstMission_E1_1 % ls -al 
-total 56
-drwxr-xr-x   9 dlckdwls763222  dlckdwls763222    288  7 30 18:30 .
-drwxr-x---+ 21 dlckdwls763222  dlckdwls763222    672  7 30 18:00 ..
-drwxr-xr-x  16 dlckdwls763222  dlckdwls763222    512  7 30 18:16 .git
-drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 18:29 docker-study
-drwxr-xr-x   5 dlckdwls763222  dlckdwls763222    160  7 30 18:19 images
-drwxr-xr-x   4 dlckdwls763222  dlckdwls763222    128  7 30 15:34 missionscreenshots
-drwx------   2 dlckdwls763222  dlckdwls763222     64  7 30 18:30 perm_dir
--rwxrwxrwx   1 dlckdwls763222  dlckdwls763222      0  7 30 18:30 perm_file.txt
--rw-r--r--   1 dlckdwls763222  dlckdwls763222  28256  7 30 18:28 README.md
+$ % chmod 777 perm_file.txt
+$ % chmod 700 perm_dir
+$ % ls -al 
+
 ```
 ### 실행 증거
 [실행 환경 확인 로그 보기](./images/permission-check.png)
