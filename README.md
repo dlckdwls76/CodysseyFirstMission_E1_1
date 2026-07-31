@@ -373,6 +373,8 @@ $ git config --list
 ```
 [실행 환경 확인 로그 보기](./images/gitsetting.png)
 
+[실행 환경 확인 로그 보기](./images/gitsetting2.png)
+
 ---
 
 # 11. 수행항목 체크리스트
