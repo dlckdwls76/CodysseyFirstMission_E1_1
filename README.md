@@ -249,7 +249,7 @@ $ % root@230e3f2c8909:/# exit
 기본 Nginx 웹 서버의 메인 화면을 나만의 정적 웹페이지로 교체하는 커스텀 이미지를 제작.
 
 ### 7-1. 빌드 및 실행 실습 결과
-
+| --- | --- | --- |
 | **커스텀 HTML 생성** | `index.html` 파일 생성 및 내용 작성 | `touch index.html` (또는 VS Code 사용) |
 | **Dockerfile 생성** | 베이스 이미지(`FROM`)와 파일 복사(`COPY`) 명령어가 포함된 Dockerfile 작성 | `touch Dockerfile` (또는 VS Code 사용) |
 | **커스텀 이미지 빌드** | `my-custom-nginx`라는 이름의 새로운 이미지 생성 성공 | `docker build -t my-custom-nginx .` |
