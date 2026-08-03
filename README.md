@@ -271,6 +271,7 @@ COPY index.html /usr/share/nginx/html/index.html
 [실행 환경 확인 로그 보기](./images/docker8081custom-web.png)
 
 [실행 환경 확인 로그 보기](./images/localhost8081.png)
+
 ---
 # 8. 포트 매핑 및 접속 증거
 
