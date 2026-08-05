@@ -406,7 +406,7 @@ After: 호스트 파일 변경 완료!
 
 
 ### 10-2 프로젝트 구조
-
+```bash
 Codyssey_Academy/
 ├── README.md
 ├── docker-study/
@@ -414,7 +414,7 @@ Codyssey_Academy/
 │   └── index.html
 └── images/
     └── 실행 및 검증 캡처
-
+```
 README.md: 실행 순서, 결과, 원리, 문제 해결 기록
 
 docker-study/Dockerfile: Nginx 기반 이미지 빌드 방법
