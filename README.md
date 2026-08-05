@@ -133,6 +133,13 @@ $ % ls -al
 
 # 5. Docker 설치 및 기본 운영 명령 실습
 5-1. 도커의 핵심 개념 (이미지와 컨테이너)
+
+5-1. 도커 핵심 개념
+ ├─ 이미지
+ ├─ 컨테이너
+ ├─ 포트 매핑
+ └─ 네트워크 네임스페이스와 보안
+ 
 이미지 (Image)
 프로그램을 실행하는 데 필요한 모든 것(OS, 설정, 코드)이 담겨 있는 변하지 않는 원본 파일
 
@@ -141,6 +148,12 @@ $ % ls -al
 
 포트 매핑 (Port Mapping) = "-p 8080:80"
 내 컴퓨터(Mac)의 특정 포트(예: 8080)로 들어오는 접속을, 도커 컨테이너 내부의 포트(예: 80)로 연결해주는 작업
+
+### 네트워크 네임스페이스와 포트 노출
+
+Docker 컨테이너는 호스트와 분리된 네트워크 네임스페이스(Network Namespace)를 사용한다. 네트워크 네임스페이스란 컨테이너마다 독립적인 IP 주소, 네트워크 인터페이스와 포트 공간을 갖도록 격리하는 기능이다.
+
+따라서 컨테이너 내부에서 Nginx가 80번 포트로 실행되고 있어도 호스트에서 바로 접속할 수 없다. 호스트에서 컨테이너의 웹서버에 접속하려면 `-p` 옵션을 사용해 컨테이너의 포트를 호스트에 공개해야 한다.
 
 5-2. Docker 설치 및 기본 점검
 | 진행 단계 | 실행 결과 및 설명 | 명령어 |
@@ -155,6 +168,16 @@ $ % ls -al
 | **컨테이너 리소스 확인** | 컨테이너가 사용 중인 CPU, 메모리(MEM USAGE), 네트워크 I/O 실시간 확인 | `docker stats --no-stream` |
 | **컨테이너 중지** | 실행 중인 컨테이너 중지 | `docker stop docker-ops-test` |
 | **전체 목록 확인** | 종료된 컨테이너를 포함한 전체 목록 확인 | `docker ps -a` |
+
+포트 매핑 (Port Mapping) = "-p 8080:80"
+
+
+
+
+```bash
+docker run -d --name docker-ops-test -p 8080:80 nginx:alpine
+
+5-2. Docker 설치 및 기본 점검
 
 docker.io/library/nginx:alpine
 각 부분의 의미는:
@@ -362,6 +385,9 @@ After: 호스트 파일 변경 완료!
 
 ---
 
+
+
+
 # 10. Git 설정 및 GitHub 연동
 
 버전 관리를 위한 Git 환경 설정을 진행하고, 로컬 저장소와 원격 저장소(GitHub)의 연동을 확인합니다.
@@ -375,8 +401,33 @@ After: 호스트 파일 변경 완료!
 | **설정 내역 확인** | 적용된 Git 글로벌 설정 리스트 출력 및 확인 | `git config --list` |
 | **원격 저장소 연동** | 로컬 저장소와 GitHub 원격 저장소(`origin`) 연결 | `git remote add origin <저장소 주소>` |
 | **연동 상태 확인** | 연결된 원격 저장소의 URL(fetch/push) 확인 | `git remote -v` |
+| **변경 파일 확인** | 커밋할 파일과 현재 Git 상태 확인 | `git status` |
+| **변경 내용 커밋** | 변경된 파일을 스테이징하고 커밋 생성 | `git add .    git commit -m "docs: 개발 워크스테이션 실습 문서 작성"` |
+| **GitHub로 푸시** | 로컬 main 브랜치의 커밋을 GitHub 원격 저장소에 업로드 | `git push -u origin main` |
+| **커밋 이력 확인** | 최근 커밋이 정상적으로 생성되었는지 확인 | `git log --oneline -5` |
 
-### 10-2. 환경 확인 로그 및 캡처
+
+### 10-2 프로젝트 구조
+
+Codyssey_Academy/
+├── README.md
+├── docker-study/
+│   ├── Dockerfile
+│   └── index.html
+└── images/
+    └── 실행 및 검증 캡처
+
+README.md: 실행 순서, 결과, 원리, 문제 해결 기록
+
+docker-study/Dockerfile: Nginx 기반 이미지 빌드 방법
+
+docker-study/index.html: 이미지에 포함할 웹 페이지
+
+images/: 명령과 실제 출력이 함께 보이는 검증 자료
+
+Dockerfile과 상대 경로를 사용했기 때문에 저장소를 복제한 다른 사람도 같은 디렉터리에서 docker build -t my-custom-nginx .를 실행해 이미지를 재현할 수 있다. 포트는 -p 호스트:컨테이너, 볼륨은 -v 볼륨명:컨테이너경로 형식으로 명시했다.
+
+### 10-3. 환경 확인 로그 및 캡처
 
 **[Git 설정 확인 로그]**
 ```bash
